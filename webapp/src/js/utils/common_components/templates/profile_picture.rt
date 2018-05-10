@@ -1,0 +1,3 @@
+<div class="row profile-picture-normal" style="background-color: {this.state.background_color};">
+    <div class="profile-picture-normal-no-avatar">{this.state.profileShortName}</div>
+</div>

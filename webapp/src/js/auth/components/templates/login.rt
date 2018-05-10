@@ -1,0 +1,32 @@
+<rt-import name="default" as="Button" from="react-toolbox/lib/button" />
+<rt-import name="default" as="TextInput" from="../../../utils/common_components/textInput_form" />
+<rt-import name="Field" as="Field" from="redux-form" />
+<rt-import name="Link" as="Link" from="react-router-dom" />
+<rt-import name="Card" as="Card" from="react-toolbox/lib/card" />
+<rt-import name="CardActions" as="CardActions" from="react-toolbox/lib/card" />
+<rt-import name="CardHeader" as="CardHeader" from="react-toolbox/lib/card" />
+<rt-import name="CardTitle" as="CardTitle" from="react-toolbox/lib/card" />
+<rt-import name="CardText" as="CardText" from="react-toolbox/lib/card" />
+
+<div class="row middle-xs center-xs" style="min-height:100vh;">
+    <form class="col-xs-10 col-sm-6 col-md-4 " onSubmit={this.props.handleSubmit(this.doLogin)}>   
+        <Card>
+            <CardTitle title="Login" class="p-b-5"  />
+            <CardText class="p-t-5">
+                <div>
+                <Field class="w-100" name="email" type="email" component={TextInput} label="Email Address" 
+                    />
+                </div>
+                <div>
+                <Field class="w-100" name="password" type="password" component={TextInput} label="Password" 
+                    />
+                </div>
+            </CardText>
+            <CardActions class="text-center justify-center">
+                <Button label="Login " disabled="{this.props.submitting}" 
+                        type="submit" 
+                        class="bg-success" raised />
+            </CardActions>
+        </Card>
+    </form>
+</div> 

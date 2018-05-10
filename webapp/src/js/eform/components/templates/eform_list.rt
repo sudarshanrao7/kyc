@@ -1,0 +1,110 @@
+<rt-import name="default" as="Button" from="react-toolbox/lib/button" />
+<rt-import name="default" as="Chip" from="react-toolbox/lib/chip" />
+<rt-import name="NavLink" as="NavLink" from="react-router-dom" />
+<rt-import name="default" as="FontIcon" from="react-toolbox/lib/font_icon" />
+<rt-import name="Table" as="Table" from="../../../vendor/reactable/reactable/table.jsx" />
+<rt-import name="Thead" as="Thead" from="../../../vendor/reactable/reactable/thead.jsx" />
+<rt-import name="Th" as="Th" from="../../../vendor/reactable/reactable/th.jsx" />
+<rt-import name="Tr" as="Tr" from="../../../vendor/reactable/reactable/tr.jsx" />
+<rt-import name="Td" as="Td" from="../../../vendor/reactable/reactable/td.jsx" />
+<rt-import name="default" as="moment" from="moment" />
+
+
+<div class="row center-xs m-t-20" >   
+
+    <Table className="table reactable col-xs-11 col-sm-11 col-md-10" id="table" 
+    noDataText="{`${this.props.show_all ? ' No Pending Applications forms!' : ' No KYC Applications forms submitted by you !'  }`}"
+    sortable={['created_date','id']}
+    isServerPaginate={true}
+    onSort="{this.onSort}"
+    onPageChange="{this.onPageChange}"
+    itemsPerPage={this.props.paginate_info.per_page}
+    currentPage={this.props.paginate_info.page}
+    numPages={this.props.paginate_info.total}>
+        <Thead>                                      
+              <Th column="id" style="width:90px;text-align:center;" >
+                <strong >Application ID</strong>
+            </Th> 
+              <Th column="created_date" style="width:120px;text-align:center;"  >
+                <strong >Submitted Date</strong>
+            </Th> 
+            <Th column="name" >
+                <strong >name</strong>
+            </Th>                                             
+            <Th column="birth_date" >
+                <strong >D.O.B</strong>
+            </Th>                                                                                                        
+            <Th column="mobile" >
+                <strong >Mobile</strong>
+            </Th> 
+             <Th column="pan_exempt" style="width:100px;text-align:center;" >
+                <strong >Pan Excempt</strong>
+            </Th>             
+            <Th column="status" style="width:130px;text-align:center;" >
+                <strong >Status</strong>
+            </Th>   
+            <Th column="attested_remarks"  >
+                <strong >Approver Remarks</strong>
+            </Th>                                                               
+            <Th column="action" style="width:100px;text-align:center;">
+            <strong > Action </strong>
+            </Th>
+        </Thead>
+
+        <Tr rt-repeat="eform,eformIndex in this.props.eform_list" key={eformIndex}>            
+            <Td  column="id" style="width:90px;text-align:center;"  >
+                    <span>10000{eform.id}</span>
+            </Td>               
+            <Td  column="created_date"  style="width:12px;text-align:center;" >
+                    <span>{moment(eform.created_date).calendar()}</span>
+            </Td>  
+            <Td  column="name"  >
+                    <span>{eform.first_name} {eform.middle_name} {eform.last_name}</span>
+            </Td>                         
+            <Td  column="birth_date"  >
+                    <span>{moment(eform.birth_date).format('MMMM Do YYYY')}</span>
+            </Td>     
+            <Td  column="mobile"  >
+                    <span>{eform.mobile_country_code} {eform.mobile}</span>
+            </Td>  
+            <Td  column="pan_exempt" style="width:100px;text-align:center;">
+                <div>
+                    <FontIcon   rt-if="eform.is_pan_excempt" 
+                                class="c-success icon-scale" 
+                                value='check_circle' />
+                    <FontIcon   rt-if="!eform.is_pan_excempt" 
+                                class="c-danger icon-scale" 
+                                value='not_interested' />
+                </div>
+            </Td>
+            <Td  column="status" style="width:130px;text-align:center;"  >
+                    <span>
+                        <Chip rt-if="eform.status == 1" class="bg-primary"   > In Progress </Chip>
+                        <Chip rt-if="eform.status == 2" class="bg-danger"   > Rejected </Chip>
+                        <Chip rt-if="eform.status == 3" class="bg-success"   > Approved </Chip>
+                    </span>
+            </Td>  
+            <Td  column="attested_remarks"  >
+                    <span>{eform.attestation_remarks}</span>
+            </Td>        
+            <Td column="action"  style="width:100px;text-align:center;">
+                <div>
+                    <i  onClick="{()=>{this.editEform(eform)}}"  
+                        class="material-icons pointer c-primary">
+                        create
+                    </i>
+                </div>    
+            </Td>
+        </Tr>
+    </Table>    
+
+    
+
+    <Button 
+        rt-if="!this.props.show_all"
+		style="top:90px;"
+        class="floating-add-button"
+        onClick={this.addEform}
+        icon='add' floating  ripple 
+    />    
+</div>    

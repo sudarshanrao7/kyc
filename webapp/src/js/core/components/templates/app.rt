@@ -1,0 +1,42 @@
+<rt-import name="Layout"  from="react-toolbox" />
+<rt-import name="NavDrawer"  from="react-toolbox" />
+<rt-import name="Panel"  from="react-toolbox" />
+<rt-import name="default" as="ProgressBar"   from="react-toolbox/lib/progress_bar" />
+<rt-import name="default" as="Notification" from="../../../utils/common_components/notification_component" />
+<rt-import name="AppBar"  from="react-toolbox/lib/app_bar" />
+<rt-import name="Switch" as="Switch" from="react-router-dom" />
+<rt-import name="Route" as="Route" from="react-router-dom" />
+<rt-import name="Redirect" as="Redirect" from="react-router-dom" />
+<rt-import name="default" as="Button" from="react-toolbox/lib/button" />
+<rt-import name="default" as="ErrorBoundary" from="../../../utils/common_components/error_boundaries" />
+<rt-import name="default" as="AuthContainer" from="../../../auth/components/auth_container" />
+<rt-import name="default" as="HomeContainer" from="../../../home/components/home_container" />
+
+
+<Layout class="full-height main-container" ref="{(n) => this.layout = n}">
+    <Notification></Notification>
+    <Panel class="full-panel" >   
+    <rt-virtual rt-if="this.props.isUpdatingServer">    
+        <div  class="nsProgress_block"></div>
+        <div   id="progress_modal" class="nsProgress_container">
+            <ProgressBar type='circular' mode='indeterminate' multicolor />
+        </div>
+    </rt-virtual>    
+    <AppBar class="main-app-bar"
+                title="KYC App" >
+                <Button 
+                      rt-if="this.props.isAuthenticated"
+                    label="Logout"
+                    onClick="{()=>{this.doLogout()}}"
+                    class="c-white small-button" />      
+    </AppBar>
+    <ErrorBoundary  rt-props="this.props">
+    <Switch>
+            <Route rt-if="!this.props.isAuthenticated" path="/auth" component={AuthContainer} />           
+            <Route  rt-if="this.props.isAuthenticated"  path="/" component={HomeContainer} />
+    </Switch>
+    </ErrorBoundary>
+
+
+    </Panel>
+</Layout>

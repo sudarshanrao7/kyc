@@ -1,0 +1,130 @@
+@import "./colors.less";
+
+
+.Select{
+        &.Select--multi .Select-control{
+            .Select-multi-value-wrapper{
+                .Select-value{
+                    background-color: #e8e8e8;
+                    border-radius: 3.2rem;
+                    color: #6b6b6b;
+                    border: none;
+                    .Select-value-icon{
+                        border-color: #a3a3a3;
+                        &:hover,&:focus{
+                            background-color: transparent;
+                            color: @color-primary;
+                        }                        
+                    }
+                }
+            }
+        }    
+        &.is-focused:not(.is-open) >.Select-control{
+            border-color:@color-primary;
+            border-bottom: 2px solid @color-primary;
+        }
+        .Select-control{
+			background: transparent !important;
+            background-color: transparent;
+            border:0;
+            border-radius:0;
+            box-shadow: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            text-align: left;
+            font-size: 1.6rem;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 0.2s;
+            transition-property: border;
+        }
+    }
+
+.reduxform-select-container{ 
+    position:relative;
+    text-align:left;
+	margin-top:1px; 
+    label{
+        font-size: 1.2rem;
+        color: #c5c5c5;
+    }
+    &.has-error{
+        label{
+            color: #E03D32;
+        }
+        .Select:not(.is-focused) >.Select-control{
+            border-color:#E03D32;
+            //border-bottom: 2px solid #E03D32;
+        }
+        .field-error-message{
+            width: 100%;
+            margin-top:5px;
+            color: #E03D32;
+			font-size: 1.2rem;
+        }
+    }
+	div.Select-placeholder{
+		display:none;
+    }
+    .Select.show-placeholder{
+        div.Select-placeholder{
+            display:block !important;
+        }
+    }
+    
+}
+
+.select-open-top .Select-menu-outer {
+    top:-198px !important;
+}
+
+div.blue-select.Select{
+	padding-left: 0px;
+	padding-right: 0px;
+	>.Select-control{
+		background: @color-primary;
+		.Select-placeholder{
+			color:#eee;
+		}
+		.Select-value-label{
+			color:white !important;
+		}
+		.Select-arrow{
+			border-color: white transparent transparent;
+		}
+		.Select-clear-zone{
+			color:white;
+		}
+	}
+}
+
+div.blue-highlight.Select--multi{
+	padding-left: 0px;
+	padding-right: 0px;
+	>.Select-control{
+		background: transparent;
+		.Select-multi-value-wrapper .Select-value {
+			background: @color-primary !important;
+			.Select-value-label{
+				color:white !important;
+			}
+			.Select-value-icon{
+				color:white !important;
+				border-color: white !important;
+				font-weight: 600;
+			}			
+		}	
+		.Select-placeholder{
+			color:#ccc;
+		}
+	}
+}
+
+.Select {
+    &.c-white *{
+        color:white !important;
+    }
+    &.c-white{
+        .Select-control{
+            border-bottom: 1px solid white !important;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+<rt-import name="NavLink" as="NavLink" from="react-router-dom" />
+<rt-import name="IndexLink" as="IndexLink" from="react-router-dom" />
+<rt-import name="Link" as="ToolLink" from="react-toolbox/lib/link" />
+<rt-import name="Layout" from="react-toolbox" />
+<rt-import name="NavDrawer" from="react-toolbox" />
+<rt-import name="Panel" from="react-toolbox" />
+<rt-import name="AppBar" from="react-toolbox/lib/app_bar" />
+<rt-import name="Navigation" from="react-toolbox/lib/navigation" />
+<rt-import name="IconButton" from="react-toolbox" />
+<rt-import name="FontIcon" as="FontIcon" from="react-toolbox/lib/font_icon" />
+<rt-import name="default" as="ProgressBar" from="react-toolbox/lib/progress_bar" />
+<rt-import name="Menu" as "Menu" from="react-toolbox/lib/menu" />
+<rt-import name="MenuItem" as "MenuItem" from="react-toolbox/lib/menu" />
+<rt-import name="MenuDivider" as "MenuDivider" from="react-toolbox/lib/menu" />
+<rt-import name="Switch" as="Switch" from="react-router-dom" />
+<rt-import name="Route" as="Route" from="react-router-dom" />
+<rt-import name="default" as="KYCView" from="../../../kyc/components/kyc_details_view" />
+<rt-import name="default" as="Eform" from="../../../eform/components/eform" />
+<rt-import name="default" as="EformList" from="../../../eform/components/eform_list" />
+<rt-import name="default" as="PendingApplications" from="../../../eform/components/pending_form_list" />
+<rt-import name="default" as="PendingApplicationForm" from="../../../eform/components/pending_form" />
+
+
+<div class="col-xs-12 p-0">
+    <Navigation type='horizontal' class="sub-menu">
+        <NavLink   to="{`/my`}" activeClassName="active">
+            <abbr>My KYC</abbr>
+        </NavLink>               
+        <NavLink   to="{`/applications`}" activeClassName="active">
+            <abbr>KYC Application</abbr>
+        </NavLink>   
+        <NavLink rt-if="this.props.user.is_employee"   to="{`/review`}" activeClassName="active">
+            <abbr>Pending Applications</abbr>
+        </NavLink>   
+    </Navigation>
+    <Switch>
+        <Route exact path="/my" component={KYCView} />
+        <Route exact path="/applications" render="{(routeProps)=>{return this.returnMyApplications(routeProps)}}" />
+        <Route exact path="/applications/add" component={Eform} />
+        <Route exact path="/applications/:application_id" component={Eform} />
+        <Route exact path="/review" component={PendingApplications} rt-if="this.props.user.is_employee" />
+        <Route exact path="/review/:application_id" component={PendingApplicationForm} rt-if="this.props.user.is_employee" />
+    </Switch>        
+</div>

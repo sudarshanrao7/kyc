@@ -1,0 +1,31 @@
+<rt-import name="default" as="Button" from="react-toolbox/lib/button" />
+<rt-import name="default" as="Application" from="../../../eform/components/eform" />
+<rt-import name="history" as="history" from="../../../redux/store" />
+
+
+
+<div class="row middle-xs center-xs m-t-20 text-left" style="min-height:100px;">
+    <div class="panel col-xs-11 col-sm-10 col-md-8 p-0" rt-if="!this.props.user.kyc">
+        <div class="panel-heading panel-bottom-border dashed">
+            <div class="panel-title">
+                Your Know Your Client (KYC) Information
+            </div>
+            <div class="panel-subtitle">
+                Government has made this mandatory for all your financial transactions! 
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="alert-warning" >
+                    You have not yet completed you KYC formalities. Please complete at the earliest to ensure uninterrupted services.
+            </div>
+        </div>
+        <div class="panel-footer p-10 w-100 text-right"  rt-if="!this.props.kyc">
+                <Button  onClick="{()=>{history.push('/applications/add')}}"  class="bg-success" label="Fill Application Form" raised />
+        </div>
+    </div>
+    <div  rt-if="this.props.user.kyc" class="col-xs-12">
+            <Application   rt-props="{eform:this.props.user.kyc,previewMode:true}"  />
+    </div>
+</div> 
+
+

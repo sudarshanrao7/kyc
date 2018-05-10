@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">   
+	<meta name="theme-color" content="#03A9F4">
+	<meta name="msapplication-navbutton-color" content="#03A9F4">
+	<meta name="apple-mobile-web-app-status-bar-style" content="#03A9F4">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	 <meta http-equiv="Access-Control-Allow-Origin" content="*"/> 
+	 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+	 <meta name="description" content="KYC App">
+	 <meta name="author" content="KYC">
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css"> 
+	 {% block header %}
+	 	<title>KYC App</title>
+ 	{% endblock %}  
+  </head>
+  <body class="overflow-hidden">
+    <style>
+        body,html{
+            background: #efefef;
+        }
+    </style>  
+    <div id="main-container">    
+    {% block content %}
+    {% endblock %}      
+	</div>
+	
+  </body>
+</html>

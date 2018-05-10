@@ -1,0 +1,446 @@
+<rt-import name="Card" as="Card" from="react-toolbox/lib/card" />
+<rt-import name="CardActions" as="CardActions" from="react-toolbox/lib/card" />
+<rt-import name="CardHeader" as="CardHeader" from="react-toolbox/lib/card" />
+<rt-import name="CardTitle" as="CardTitle" from="react-toolbox/lib/card" />
+<rt-import name="CardText" as="CardText" from="react-toolbox/lib/card" />
+<rt-import name="default" as="Button" from="../../../utils/common_components/tooltipButton" />
+<rt-import name="default" as="TextInput" from="../../../utils/common_components/textInput_form" />
+<rt-import name="Field" as="Field" from="redux-form" />
+<rt-import name="tetheredSelectFunction" as="Select" from="../../../utils/common_components/select_form" />
+<rt-import name="default" as="DatePicker" from="../../../utils/common_components/datepicker_form" />
+<rt-import name="default" as="Checkbox" from="../../../utils/common_components/checkbox_form" />
+<rt-import name="default" as="Dropzone" from="react-dropzone" />
+<rt-import name="Avatar" as="Avatar" from="react-toolbox/lib/avatar" />
+<rt-import name="default" as="Chip" from="react-toolbox/lib/chip" />
+
+
+<div class="row center-xs">
+    <form class="col-xs-11 col-sm-10 col-md-9 m-20 medium-labels" onSubmit={this.props.handleSubmit(this.doSave)}>
+        <Card>
+            <CardTitle class="text-left" 
+            title="{`${this.props.isKyc ? 'KYC Information' : 'KYC Application Form'    }     `}" 
+            subtitle="{`${this.props.isKyc ? 'Your information as per our records' : 'Please fill the form in english'    }     `}" 
+             />
+            <CardText class="m-t-15 text-left">
+              <div class="bg-body border-body p-10 m-b-10">
+                    <h6>1. Identity Details</h6>
+               </div> 
+                <rt-virtual >
+                    <div rt-if="!_.isEmpty(this.props.photo)" class="m-b-20 row center-xs">
+                        <Avatar className="avatar-image-100 box-100">
+                            <img src="{this.props.photo.url}" />
+                        </Avatar>
+                    </div>
+                    <div class="row center-xs m-b-10"  rt-if="!this.props.previewMode">
+                        <Dropzone class="dummy-suppress-warning" multiple={false} accept="image/*" onDrop={this.uploadAvatar}>
+                            <Button tooltip="Upload Photo" label="{ _.isEmpty(this.props.photo) ? 'Upload Photo' : 'Change Photo'}" primary raised/>
+                        </Dropzone>
+                        <Button tooltip="Delete Photo" rt-if="!_.isEmpty(this.props.photo)" onClick="{()=>{this.onDeleteFile(this.props.photo.guid,0,'photo')}}" label="Delete Photo" class="m-l-10 bg-danger"
+                            primary raised/>
+                    </div>
+                </rt-virtual>
+                <div class="row p-0">
+                    <Field  disabled={this.props.previewMode} className="w-100  m-t-20" name="is_pan_excempt" component="{Checkbox}" label="Are you a PAN excempt investor?" />
+                </div>
+                <div class="row p-0">
+                      <Field disabled={this.props.previewMode} class="w-100" name="pan_number" type="text" component={TextInput} label="Pan Number" />  
+                </div>
+                <div class="row p-0 m-b-15">
+                        <label class="material-label w-100">Upload PAN Proof Document</label>
+                        <div class="col-xs-12 m-t-15">
+                            <Chip 
+                            deletable onDeleteClick="{()=>{this.onDeleteFile(attachment.guid,attachmentIndex,'pan_document')}}"
+                            rt-repeat="attachment,attachmentIndex in this.props.pan_document" 
+                            key={attachmentIndex}>
+                                    <a style="text-decoration:underline" href="{attachment.url}" target="_blank">
+                                        {attachment.name}
+                                    </a>
+                            </Chip>
+                        </div>
+                        <Dropzone 
+                                rt-if="!this.props.previewMode"
+                                class="m-10 col-xs-11 " multiple={false}  
+                                accept="application/pdf" onDrop="{(file_data)=>{this.onDrop(file_data,'pan_document')}}"
+                                style="height:60px;border:2px dashed #ccc;">
+                            <div class="p-20"> Click here or drag and drop to add new pdf attachment</div>
+                        </Dropzone>  
+                </div>
+                <div class="row p-0">
+                    <div class="col-xs-2">
+                    <Field disabled={this.props.previewMode} class="w-100" name="prefix" component="{Select}" simpleValue={true} label="Prefix" options={this.props.supporting_data.PREFIX_LIST}  />
+                    </div>
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="first_name" type="text" component={TextInput} label="First Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="middle_name" type="text" component={TextInput} label="Middle Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="last_name" type="text" component={TextInput} label="Last Name" />
+                </div>
+
+                <div class="row p-0">
+                    <div class="col-xs-2">
+                    <Field disabled={this.props.previewMode} class="w-100" name="maiden_prefix" component="{Select}" simpleValue={true} label="Prefix" options={this.props.supporting_data.PREFIX_LIST}  />
+                    </div>
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="maiden_first_name" type="text" component={TextInput} label="Maiden First Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="maiden_middle_name" type="text" component={TextInput} label="Maiden Middle Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="maiden_last_name" type="text" component={TextInput} label="Maiden Last Name" />
+                </div>
+
+                <div class="row p-0">
+                    <div class="col-xs-2">
+                    <Field disabled={this.props.previewMode} class="w-100" name="guardian_prefix" component="{Select}" simpleValue={true} label="Prefix" options={this.props.supporting_data.PREFIX_LIST}  />
+                    </div>
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="guardian_first_name" type="text" component={TextInput} label="Father/Spouse First Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="guardian_middle_name" type="text" component={TextInput} label="Father/Spouse Middle Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="guardian_last_name" type="text" component={TextInput} label="Father/Spouse Last Name" />
+                </div>
+
+                <div class="row p-0">
+                    <div class="col-xs-2">
+                    <Field disabled={this.props.previewMode} class="w-100" name="mother_prefix" component="{Select}" simpleValue={true} label="Prefix" options={this.props.supporting_data.PREFIX_LIST}  />
+                    </div>
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="mother_first_name" type="text" component={TextInput} label="Mother First Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="mother_middle_name" type="text" component={TextInput} label="Mother Middle Name" />
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="mother_last_name" type="text" component={TextInput} label="Mother Last Name" />
+                </div>
+
+                <div class="row-margin">
+                    <Field disabled={this.props.previewMode} name="birth_date" type="date" component={DatePicker} label="Date of Birth" />
+                </div>
+
+                <div class="row-margin">
+                    <Field disabled={this.props.previewMode} class="w-100 p-t-0 m-b-20 p-l-0" name="gender" simpleValue={true} component="{Select}" label="Gender" options={this.props.supporting_data.GENDER_LIST} />
+                </div>
+
+                <div class="row-margin">
+                    <Field disabled={this.props.previewMode} class="w-100 p-t-0 m-b-20 p-l-0" name="marital_status" simpleValue={true} component="{Select}" label="Marital Status" options={this.props.supporting_data.MARITAL_STATUS_LIST} />
+                </div>
+
+                <div class="row-margin">
+                    <Field disabled={this.props.previewMode} class="w-100 p-t-0 m-b-20 p-l-0" name="citizen" simpleValue={true} component="{Select}" label="Citizenship" options={this.props.supporting_data.COUNTRY_CODE_LIST} />
+                </div>
+                <div class="row-margin">
+                    <Field disabled={this.props.previewMode} class="w-100 p-t-0 m-b-20 p-l-0" name="residential_status" simpleValue={true} component="{Select}" label="Residential Status" options={this.props.supporting_data.RESIDENTIAL_STATUS_LIST} />
+                </div>
+                <div class="row-margin">
+                    <Field disabled={this.props.previewMode} class="w-100 p-t-0 m-b-20 p-l-0" name="occupation_type" simpleValue={true} component="{Select}" label="Occupation Type" options={this.props.supporting_data.OCCUPATION_TYPE_LIST} />
+                </div>
+
+               <div class="bg-body border-body p-10 m-b-10">
+                    <h6>2. Proof Of Identity</h6>
+               </div>    
+
+                <div class="row p-0">
+                    <div class="col-xs-4">
+                    <Field disabled={this.props.previewMode} class="w-100" name="poi_type" simpleValue={true} component="{Select}" label="Proof Of Identity Type" options={this.props.supporting_data.POI_TYPE_LIST}  />
+                    </div>
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="poi_number" type="text" component={TextInput} label="Proof Of Identity Number" />
+                    <div class="col-xs-4" >
+                    <Field disabled={this.props.previewMode} rt-if="this.props.poi_type == 1"  name="passport_expiry_date" type="date" component={DatePicker} label="Passport Expiry Date" />
+                    </div>
+                    <div class="col-xs-4" >
+                    <Field disabled={this.props.previewMode} rt-if="this.props.poi_type == 3"  name="dl_expiry_date" type="date" component={DatePicker} label="Driver License Expiry Date" />
+                    </div>
+                    <Field disabled={this.props.previewMode} rt-if="this.props.poi_type == 6" class="col-xs-4"  name="other_poi_name" type="text" component={TextInput} label="Other Identity Document Name" />
+                </div>   
+                 <div class="row p-0 m-b-15">
+                        <label class="material-label w-100">Upload Proof Document</label>
+                        <div class="alert-warning m-b-10 m-t-15 w-100" rt-if="this.props.poi_document && this.props.poi_document.length === 0" >
+                                <p>Certified copy of any one of the Proof of Identity [POI] document needs to be submitted</p>
+                        </div>
+                        <div class="col-xs-12 m-t-15">
+                            <Chip 
+                            deletable onDeleteClick="{()=>{this.onDeleteFile(attachment.guid,attachmentIndex,'poi_document')}}"
+                            rt-repeat="attachment,attachmentIndex in this.props.poi_document" 
+                            key={attachmentIndex}>
+                                    <a style="text-decoration:underline" href="{attachment.url}" target="_blank">
+                                        {attachment.name}
+                                    </a>
+                            </Chip>
+                        </div>
+                        <Dropzone 
+                                 rt-if="!this.props.previewMode"
+                                class="m-10 col-xs-11 " multiple={false}  
+                                accept="application/pdf" onDrop="{(file_data)=>{this.onDrop(file_data,'poi_document')}}"
+                                style="height:60px;border:2px dashed #ccc;">
+                            <div class="p-20"> Click here or drag and drop to add new pdf attachment</div>
+                        </Dropzone>  
+                 </div>   
+
+               <div class="bg-body border-body p-10 m-b-10">
+                    <h6>3. Proof Of Address (Current / Permanent / Overseas Address)</h6>
+               </div> 
+
+                <div class="row p-0">
+                    <Field disabled={this.props.previewMode} class="w-100" name="address" type="text" component={TextInput} label="Current / Permanent / Overseas Address Details" multiline="{true}" />
+                </div>
+
+                <div class="row p-0">
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="district" type="text" component={TextInput} label="District"  />
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="city" type="text" component={TextInput} label="City / Town / Village"  />
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="zipcode" type="text" component={TextInput} label="Zip / Post Code" />
+                </div>
+
+               <div class="row p-0">
+                    <div class="col-xs-4">
+                        <Field disabled={this.props.previewMode} class="w-100" name="indian_state" simpleValue={true} component="{Select}" label="State" options={this.props.supporting_data.INDIA_STATE_CODE_LIST}  />
+                    </div> 
+                    <div class="col-xs-4">
+                        <Field disabled={this.props.previewMode}  class="w-100" name="country" simpleValue={true} component="{Select}" label="Country" options={this.props.supporting_data.COUNTRY_CODE_LIST}  />
+                    </div>  
+                    <div class="col-xs-4">
+                        <Field disabled={this.props.previewMode} class="w-100" name="address_type" simpleValue={true} component="{Select}" label="Address Type" options={this.props.supporting_data.ADDRESS_TYPE_LIST}  />
+                    </div>    
+                </div> 
+
+                <div class="row p-0">
+                    <div class="col-xs-4">
+                    <Field disabled={this.props.previewMode} class="w-100" name="poa_type" simpleValue={true} component="{Select}" label="Proof Of Address Type" options={this.props.supporting_data.POA_TYPE_LIST}  />
+                    </div>
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="poa_number" type="text" component={TextInput} label="Proof Of Address Number" />
+                    <div class="col-xs-4" >
+                        <Field disabled={this.props.previewMode} rt-if="this.props.poa_type == 1" name="poa_passport_expiry_date" type="date" component={DatePicker} label="Passport Expiry Date" />
+                    </div>
+                    <div class="col-xs-4" >
+                    <Field disabled={this.props.previewMode} rt-if="this.props.poa_type == 3"  name="poa_dl_expiry_date" type="date" component={DatePicker} label="Driver License Expiry Date" />
+                    </div>
+                    <Field disabled={this.props.previewMode} rt-if="this.props.poa_type == 6" class="col-xs-4"  name="poa_other_poi_name" type="text" component={TextInput} label="Other Identity Document Name" />
+                </div>  
+
+                 <div class="row p-0 m-b-15">
+                        <label class="material-label w-100">Upload Proof Document</label>
+                        <div class="alert-warning m-b-10 m-t-15 w-100" rt-if="this.props.poa_document && this.props.poa_document.length === 0" >
+                                <p>Certified copy of any one of the Proof of Address [POA] document needs to be submitted</p>
+                        </div>
+                        <div class="col-xs-12 m-t-15">
+                            <Chip 
+                            deletable onDeleteClick="{()=>{this.onDeleteFile(attachment.guid,attachmentIndex,'poa_document')}}"
+                            rt-repeat="attachment,attachmentIndex in this.props.poa_document" 
+                            key={attachmentIndex}>
+                                    <a style="text-decoration:underline" href="{attachment.url}" target="_blank">
+                                        {attachment.name}
+                                    </a>
+                            </Chip>
+                        </div>
+                        <Dropzone 
+                                rt-if="!this.props.previewMode"
+                                class="m-10 col-xs-11 " multiple={false}  
+                                accept="application/pdf" onDrop="{(file_data)=>{this.onDrop(file_data,'poa_document')}}"
+                                style="height:60px;border:2px dashed #ccc;">
+                            <div class="p-20"> Click here or drag and drop to add new pdf attachment</div>
+                        </Dropzone>  
+                 </div>
+
+
+                <div  rt-repeat="caddress,caddressIndex in this.props.correspondance_addresses" key={caddressIndex}>
+                        <div class="bg-body border-body p-10 m-b-10 vertical-align">
+                                <h6>
+                                    3.{caddressIndex+1} Correspondence / Local Address Details
+                                <Button rt-if="!this.props.previewMode" onClick="{()=>{this.deleteLocalAddress(caddressIndex)}}" class="bg-danger micro pull-right" icon="delete_forever" floating mini tooltip="Delete Correspondance Address"  />
+                                </h6>
+                        </div> 
+                        <div class="row p-0">
+                            <Field disabled={this.props.previewMode} className="w-100 m-t-20" name="correspondance_addresses[{caddressIndex}]use_poa_for_local_address" component="{Checkbox}" label="Same as Current / Permanent / Overseas Address details?" />
+                        </div>
+                    <div class="row p-0">
+                        <Field disabled={this.props.previewMode} class="w-100" name="correspondance_addresses[{caddressIndex}]address" type="text" component={TextInput} label=" Address" multiline="{true}" />
+                    </div>
+                    <div class="row p-0">
+                        <Field disabled={this.props.previewMode} class="col-xs-4" name="correspondance_addresses[{caddressIndex}]district" type="text" component={TextInput} label="District"  />
+                        <Field disabled={this.props.previewMode} class="col-xs-4" name="correspondance_addresses[{caddressIndex}]city" type="text" component={TextInput} label="City / Town / Village"  />
+                        <Field disabled={this.props.previewMode}  class="col-xs-4" name="correspondance_addresses[{caddressIndex}]zipcode" type="text" component={TextInput} label="Zip / Post Code" />
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-xs-6">
+                            <Field disabled={this.props.previewMode} class="w-100" name="correspondance_addresses[{caddressIndex}]indian_state" simpleValue={true} component="{Select}" label="State" options={this.props.supporting_data.INDIA_STATE_CODE_LIST}  />
+                        </div> 
+                        <div class="col-xs-6">
+                            <Field disabled={this.props.previewMode} class="w-100" name="correspondance_addresses[{caddressIndex}]country" simpleValue={true} component="{Select}" label="Country" options={this.props.supporting_data.COUNTRY_CODE_LIST}  />
+                        </div>   
+                    </div> 
+                </div>
+                 <div class="row p-0 justify-right m-t-15">
+                    <Button rt-if="!this.props.previewMode" onClick="{this.addLocalAddress}" class="bg-success" icon="add" floating mini tooltip="Add New Correspondance Address"  />
+                </div>
+                <div class="bg-body border-body p-10 m-b-10 m-t-15">
+                    <h6>4. Contact Details (All communications will be sent on provided Mobile no. / Email-ID) </h6>
+               </div>                                   
+                <div class="row p-0">
+                    <Field disabled={this.props.previewMode} class="w-100" name="email" type="email" component="{TextInput}" label="Email" />
+                </div>
+
+                <div class="row p-0">
+                    <Field disabled={this.props.previewMode} class="col-xs-3" name="mobile_country_code" type="number" component={TextInput} label="Mobile Country Code" />
+                    <Field disabled={this.props.previewMode} class="col-xs-9" name="mobile" type="number" component={TextInput} label="Mobile Number" />
+                </div>  
+
+                <div class="row p-0">
+                    <Field disabled={this.props.previewMode} class="col-xs-2" name="office_tel_prefix" type="number" component={TextInput} label="STD Code" />
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="office_telephone" type="number" component={TextInput} label="Office Telephone Number" />
+                    <Field disabled={this.props.previewMode} class="col-xs-2" name="home_tel_prefix" type="number" component={TextInput} label="STD Code" />
+                    <Field disabled={this.props.previewMode} class="col-xs-4" name="home_telephone" type="number" component={TextInput} label="Home Telephone Number" />
+                </div>   
+
+                <div class="bg-body border-body p-5 m-b-10 m-t-15 vertical-align">
+                    <h6>5. FATCA/CRS Information </h6>
+                    <Field disabled={this.props.previewMode} className="w-100  m-t-20 pull-right" name="is_fatca_applicable" component="{Checkbox}" label="Residence for Tax Purposes in Jurisdiction(s) Outside India is applicable?" />
+               </div>
+
+                <div class="row p-0">
+                    <Field disabled="{!this.props.is_fatca_applicable}"  class="col-xs-6" name="fatca_tin_number" type="text" component={TextInput} label="Tax Identification Number or equivalent (If issued by jurisdiction)" />  
+                    <div class="col-xs-6">
+                        <Field disabled="{!this.props.is_fatca_applicable}"  class="w-100" name="fatca_country_judistriction" simpleValue={true}  component="{Select}" label="Country of Jurisdiction of Residence" options={this.props.supporting_data.COUNTRY_CODE_LIST}  />
+                    </div> 
+                </div>
+                <div class="row p-0">
+                    <Field disabled="{!this.props.is_fatca_applicable}"  class="col-xs-6" name="fatca_place_of_birth" type="text" component={TextInput} label="Place of Birth" />  
+                    <div class="col-xs-6">
+                        <Field disabled="{!this.props.is_fatca_applicable}" class="w-100" name="fatca_country_of_birth" simpleValue={true} component="{Select}" label="Country Of Birth" options={this.props.supporting_data.COUNTRY_CODE_LIST}  />
+                    </div> 
+                </div> 
+                <div class="row p-0">
+                    <Field disabled="{!this.props.is_fatca_applicable}" class="w-100" name="fatca_address" type="text" component={TextInput} label="Address" multiline="{true}" />
+                </div>
+                <div class="row p-0">
+                    <Field disabled="{!this.props.is_fatca_applicable}"  class="col-xs-4" name="fatca_district" type="text" component={TextInput} label="District"  />
+                    <Field disabled="{!this.props.is_fatca_applicable}" class="col-xs-4" name="fatca_city" type="text" component={TextInput} label="City / Town / Village"  />
+                    <Field disabled="{!this.props.is_fatca_applicable}" class="col-xs-4" name="fatca_zipcode" type="text" component={TextInput} label="Zip / Post Code" />
+                </div>
+                 <div class="row p-0">
+                    <div class="col-xs-4">
+                        <Field disabled={this.props.previewMode} class="w-100" name="fatca_indian_state" simpleValue={true} component="{Select}" label="State" options={this.props.supporting_data.INDIA_STATE_CODE_LIST}  />
+                    </div> 
+                        <div class="col-xs-4">
+                        <Field disabled="{!this.props.is_fatca_applicable}" class="w-100" name="fatca_country" simpleValue={true} component="{Select}" label="Country" options={this.props.supporting_data.COUNTRY_CODE_LIST}  />
+                    </div> 
+                  </div>   
+
+                <div class="bg-body border-body p-10 m-b-10 " rt-if="this.props.related_persons &&  this.props.related_persons.length === 0">
+                        <h6>
+                            6.Details of Related Person (Optional)
+                        </h6>
+                </div> 
+                <div  rt-repeat="rpersons,rpersonsIndex in this.props.related_persons" key={rpersonsIndex}>
+                        <div class="bg-body border-body p-10 m-b-20 vertical-align">
+                                <h6>
+                                    6.{rpersonsIndex}  Details of Related Person (Optional)
+                                </h6>
+                        </div> 
+                        <div class="row p-0">
+                            <div class="col-xs-6">
+                            <Field disabled={this.props.previewMode} class="w-100" name="related_persons[{rpersonsIndex}]related_person_type" simpleValue={true} component="{Select}" label="Related Person Type" options={this.props.supporting_data.RELATED_PERSON_TYPE_LIST}  />
+                            </div>
+                            <Field disabled={this.props.previewMode} class="col-xs-6" name="related_persons[{rpersonsIndex}]kyc_number" type="number" component={TextInput} label="KYC Number(If Available)" />
+                        </div>
+                        <div class="row p-0">
+                            <div class="col-xs-2">
+                            <Field disabled={this.props.previewMode} class="w-100" name="related_persons[{rpersonsIndex}]prefix" simpleValue={true} component="{Select}" label="Prefix" options={this.props.supporting_data.PREFIX_LIST}  />
+                            </div>
+                            <Field disabled={this.props.previewMode} class="col-xs-4" name="related_persons[{rpersonsIndex}]first_name" type="text" component={TextInput} label="First Name" />
+                            <Field disabled={this.props.previewMode} class="col-xs-3" name="related_persons[{rpersonsIndex}]middle_name" type="text" component={TextInput} label="Middle Name" />
+                            <Field disabled={this.props.previewMode} class="col-xs-3" name="related_persons[{rpersonsIndex}]last_name" type="text" component={TextInput} label="Last Name" />
+                        </div>
+                        <div class="row p-0">
+                            <div class="col-xs-4">
+                            <Field disabled={this.props.previewMode} class="w-100" name="related_persons[{rpersonsIndex}]poi_type" simpleValue={true} component="{Select}" label="Proof Of Identity Type" options={this.props.supporting_data.POI_TYPE_LIST}  />
+                            </div>
+                            <Field disabled={this.props.previewMode} class="col-xs-4" name="related_persons[{rpersonsIndex}]poi_number" type="text" component={TextInput} label="Proof Of Identity Number" />
+                            <div class="col-xs-4" >
+                            <Field disabled={this.props.previewMode} rt-if="rpersons.poi_type === 1"  name="related_persons[{rpersonsIndex}]passport_expiry_date" type="date" component={DatePicker} label="Passport Expiry Date" />
+                            </div>
+                            <div class="col-xs-4" >
+                            <Field disabled={this.props.previewMode} rt-if="rpersons.poi_type  === 3"  name="related_persons[{rpersonsIndex}]dl_expiry_date" type="date" component={DatePicker} label="Driver License Expiry Date" />
+                            </div>
+                            <Field disabled={this.props.previewMode} rt-if="rpersons.poi_type  === 6" class="col-xs-4"  name="related_persons[{rpersonsIndex}]other_poi_name" type="text" component={TextInput} label="Other Identity Document Name" />
+                        </div>  
+                        <div class="row p-0 m-b-15">
+                                <label class="material-label w-100">Upload Proof Document</label>
+                                <div class="alert-warning m-b-10 m-t-15 w-100" rt-if="rpersons.poi_document && rpersons.poi_document.length === 0" >
+                                        <p>Certified copy of any one of the Proof of Identity [POI] document needs to be submitted. Ignore if KYC number added</p>
+                                </div>
+                                <div class="col-xs-12">
+                                    <Chip 
+                                    deletable onDeleteClick="{()=>{this.onDeleteFile(attachment.guid,attachmentIndex,'poi_document')}}"
+                                    rt-repeat="attachment,attachmentIndex in rpersons.poi_document" 
+                                    key={attachmentIndex}>
+                                            <a style="text-decoration:underline" href="{attachment.url}" target="_blank">
+                                                {attachment.name}
+                                            </a>
+                                    </Chip>
+                                </div>
+                                <Dropzone 
+                                        rt-if="!this.props.previewMode"
+                                        class="m-10 col-xs-11 " multiple={false}  
+                                        accept="application/pdf" onDrop="{(file_data)=>{this.onDrop(file_data,'related_person_document',rpersonsIndex)}}"
+                                        style="height:60px;border:2px dashed #ccc;">
+                                    <div class="p-20"> Click here or drag and drop to add new pdf attachment</div>
+                                </Dropzone>  
+                        </div>
+
+                </div>
+                 <div class="row p-0 justify-right m-t-15">
+                    <Button rt-if="!this.props.previewMode" onClick="{this.addRelatedPerson}" class="bg-success" icon="add" floating mini tooltip="Add New Related Person"  />
+                </div>
+
+
+
+                <div class="bg-body border-body p-10 m-b-10 m-t-15">
+                    <h6>6. Remarks  (If any) </h6>
+               </div>
+                <div class="row p-0">
+                    <Field disabled={this.props.previewMode} class="w-100" name="remarks" type="text" component={TextInput} label="Remarks" multiline="{true}" />
+                </div>
+                <div rt-if="!this.props.isKyc" class="bg-body border-body p-10 m-b-10 m-t-15">
+                    <h6>7. Application Declaration </h6>
+               </div>
+               <div rt-if="!this.props.isKyc">
+                <ul class="p-20" > 
+                        <li>I hereby declare that the details furnished above are true and correct to the best of my knowledge and belief and I undertake to inform you of any changes
+    therein, immediately. In case any of the above information is found to be false or untrue or misleading or misrepresenting, I am aware that I may be held
+    liable for it. I hereby declare that I am not making this application for the purpose of contravention of any Act, Rules, Regulations or any statute of
+    legislation or any notifications/directions issued by any governmental or statutory authority from time to time</li>
+                        <li>I hereby consent to receiving information from Central KYC Registry through SMS/Email on the above registered number/email address.</li>
+                </ul>
+
+                    <div class="row p-0">
+                        <Field disabled={this.props.previewMode} className="w-100 m-l-10 m-b-20" name="consent" component="{Checkbox}" label="I agree with the above statements" />
+                    </div>
+              </dive  
+
+
+
+            </CardText>
+            <CardActions class="end-xs m-r-10 m-b-20" rt-if="!this.props.isKyc">
+                <div class="row p-0" rt-if="this.props.eform.status && this.props.eform.status !== 1">
+                        <div class="col-xs-12 alert-warning">
+                            Approved/Rejected applications cannot be modified
+                        </div>
+                </div>
+                 <Button label="Approve Application" 
+                        rt-if="this.props.previewMode && this.props.user.is_attester"
+                        class="bg-success" 
+                        onClick="{()=>{this.approveRejectApplication(3)}}"
+                        tooltip="Approve Application Form"
+                         type="button" primary
+                        raised />   
+                 <Button label="Reject Application" 
+                        rt-if="this.props.previewMode && this.props.user.is_attester"
+                        class="bg-danger" 
+                        onClick="{()=>{this.approveRejectApplication(2)}}"
+                        tooltip="Reject Application Form"
+                         type="button" primary
+                        raised />                           
+
+                <Button label="Submit Application" 
+                        rt-if="!this.props.previewMode"
+                        tooltip="Submit Application Form"
+                        disabled="{this.props.pristine || this.props.submitting}" 
+                        class="bg-success" type="submit" primary
+                        raised />
+                <Button label="Cancel" 
+                        onClick="{this.goBack}"
+                        tooltip="Go Back"
+                        disabled="{this.props.submitting}" 
+                         type="button" accent
+                        raised />
+            </CardActions>
+        </Card>
+    </form>
+</div>

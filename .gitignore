@@ -1,0 +1,27 @@
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+site_media
+.settings/
+### Env ###
+env/
+## Webapp ##
+webapp/node_modules/
+npm-debug.log*
+
+.flowconfig
+.buckconfig
+__tests__/
+typings/
+webpack-dev-stats.json
+webpack-prod-stats.json
+*.rt.js
+.happypack/
+webapp/dist/
+
+*.iml
+.DS_Store

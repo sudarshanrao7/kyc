@@ -1,0 +1,51 @@
+{
+    "env": {
+       "development":{
+        "plugins": [
+            "lodash",
+            "transform-runtime",
+            //"transform-react-jsx",  
+            "transform-async-to-generator",  
+            "transform-object-rest-spread",
+            "transform-decorators-legacy",
+            "react-hot-loader/babel"        
+        ],            
+          "presets": [
+           	    [ "env", { "modules": false } ],
+               "react",
+			  "stage-0"
+            ]           
+        },
+        "production":{
+            "plugins": [
+                "lodash",
+                "transform-runtime",
+                //"transform-react-jsx",  
+                "transform-async-to-generator",  
+                "transform-object-rest-spread",
+                "transform-decorators-legacy"  
+            ],            
+          "presets": [
+           	    [ "env", { "modules": false } ],
+               "react",
+			   "stage-0"
+            ]          
+        },
+        "web":{
+          "plugins": [
+					"lodash",
+				   "transform-runtime",
+                  //"transform-react-jsx",  
+                  "transform-async-to-generator",  
+                  "transform-object-rest-spread",
+                  "transform-decorators-legacy",
+                  "react-hot-loader/babel"        
+            ],            
+          "presets": [
+           	    [ "env", { "modules": false } ],
+               "react",
+			 "stage-0"
+            ]                
+        }
+    }   
+}

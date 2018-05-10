@@ -1,0 +1,117 @@
+.bg-success {
+  background: #45bc00 !important;
+  color: white !important;
+}
+.c-success {
+  color: #45bc00 !important;
+}
+.bg-warning {
+  background: #ffc545 !important;
+  color: white;
+}
+.c-warning {
+  color: #ffc545 !important;
+}
+.bg-danger {
+  background: #f16767 !important;
+  color: white !important;
+}
+.c-danger {
+  color: #f16767 !important;
+}
+.bg-info {
+  background: #00D0FE !important;
+  color: white !important;
+}
+.c-info {
+  color: #00D0FE !important;
+}
+.bg-light-info {
+  background: #fcf8e3 !important;
+}
+.bg-lightgray {
+  background: #D8DDE6 !important;
+}
+.bg-gray {
+  background: #a4b0c5 !important;
+}
+.bg-beige {
+  background: #EEEEEE !important;
+}
+.bg-body {
+  background: #f6f7f6 !important;
+}
+.bg-biscuit {
+  background: #e2e2e2 !important;
+}
+.c-lightgray {
+  color: #D8DDE6 !important;
+}
+.c-darkgray {
+  color: #666 !important;
+}
+.bg-blue {
+  background: #0292d3 !important;
+  color: white !important;
+}
+.bg-primary {
+  background: #0292d3 !important;
+  color: white !important;
+}
+.bg-primary-dark {
+  background: #03A9F4 !important;
+  color: white !important;
+}
+.bg-accent {
+  background: #4C555C !important;
+  color: white !important;
+}
+.c-accent {
+  color: #4C555C !important;
+}
+.bg-accent-dark {
+  background: #394045 !important;
+  color: white !important;
+}
+.c-accent-dark {
+  color: #394045 !important;
+}
+.bg-white {
+  background: white !important;
+}
+.bg-transparent {
+  background: transparent !important;
+}
+.c-primary {
+  color: #0292d3 !important;
+}
+.c-primary-dark {
+  color: #03A9F4 !important;
+}
+.c-primary-light {
+  color: #f16767 !important;
+}
+.c-success {
+  color: #45bc00 !important;
+}
+.c-white {
+  color: white !important;
+}
+.c-gray {
+  color: #a4b0c5 !important;
+}
+.bg-body {
+  background: #f6f7f6 !important;
+}
+.c-flatuicolor-midnightblue {
+  color: #2c3e50 !important;
+}
+.c-flatuicolor-pomegranate {
+  color: #c0392b !important;
+}
+.c-flatuicolor-wisteria {
+  color: #8e44ad !important;
+}
+.c-black {
+  color: black !important;
+}
