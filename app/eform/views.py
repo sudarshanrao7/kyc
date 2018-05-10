@@ -315,76 +315,89 @@ class ApplicationFormDetailsView(ProtectedView):
 					error_obj['reason'] = "Application not found"
 					return HttpResponseNotFound(content_type="application/json", content=json.dumps(error_obj))
 				
-				params = ApplicationForm.active_objects.filter(id=pk).values()[0]
-				kyc = request.user.kyc
-				if kyc is None:
-					# Sanitizing
-					params = {k: params[k] for k in UserKYC.basic_fields() if k in params}
-					kyc = UserKYC(**params)
-					kyc.user = form.user
-					# Not a great strategy...Okie for now
-					kyc.kyc_number = str(randint(100000000001, 999999999999))
-				else:
-					# Sanitizing
-					params = {k: params[k] for k in UserKYC.basic_fields() if k in params}
-					for k in params:
-						setattr(form, k, params[k])
-					kyc.user = form.user
-				try:
-					kyc.full_clean()
-				except ValidationError as e:
-					error_obj['errors'] = dict(e)
-					return HttpResponseBadRequest(content_type="application/json", content=json.dumps(error_obj))
-				kyc.save()
-				
-				kyc.correspondance_addresses.all().delete()
-				kyc.related_persons.all().delete()
-				
-				for ca in form.correspondance_addresses.all():
-					correspondance_address = CorrespondanceAddress.active_objects.create(
-						use_poa_for_local_address=ca.use_poa_for_local_address,
-						address=ca.address,
-						city=ca.city,
-						district=ca.district,
-						indian_state=ca.indian_state,
-						zipcode=ca.zipcode,
-						country=ca.country,
-						user=kyc.user
-					)
-					kyc.correspondance_addresses.add(correspondance_address)
-				
-				for rp in form.related_persons.all():
-					related_person = RelatedPerson.active_objects.create(
-						kyc=rp.kyc,
-						related_person_type=rp.related_person_type,
-						first_name=rp.first_name,
-						last_name=rp.last_name,
-						middle_name=rp.middle_name,
-						prefix=rp.prefix,
-						poi_type=rp.poi_type,
-						poi_number=rp.poi_number,
-						passport_expiry_date=rp.passport_expiry_date,
-						dl_expiry_date=rp.dl_expiry_date,
-						poi_document=rp.poi_document,
+				if status == choices.APPLICATION_REJECTED:
+					form.status = status
+					form.save()
 					
+					attestation = Attestation.active_objects.create(
+						employee=request.user.employee,
+						application_form=form,
+						remarks=remarks
 					)
-					kyc.related_persons.add(related_person)
-				
-				kyc.application_forms.add(form)
-				
-				attestation = Attestation.active_objects.create(
-					employee=request.user.employee,
-					application_form=form,
-					remarks=remarks
-				)
-				
-				form.status = status
-				form.save()
-				
-				"""
-				NEED TO COPY ALL IMAGES & PDF ideally ?
-				"""
-				response_object['data'] = model_to_dict(form, fields=APPLICATION_FORM_DETAILED_SERIALIZER_FIELDS)
-				return JsonResponse(response_object)
+					
+					response_object['data'] = model_to_dict(form, fields=APPLICATION_FORM_DETAILED_SERIALIZER_FIELDS)
+					return JsonResponse(response_object)
+				else:
+					params = ApplicationForm.active_objects.filter(id=pk).values()[0]
+					kyc = request.user.kyc
+					if kyc is None:
+						# Sanitizing
+						params = {k: params[k] for k in UserKYC.basic_fields() if k in params}
+						kyc = UserKYC(**params)
+						kyc.user = form.user
+						# Not a great strategy...Okie for now
+						kyc.kyc_number = str(randint(100000000001, 999999999999))
+					else:
+						# Sanitizing
+						params = {k: params[k] for k in UserKYC.basic_fields() if k in params}
+						for k in params:
+							setattr(form, k, params[k])
+						kyc.user = form.user
+					try:
+						kyc.full_clean()
+					except ValidationError as e:
+						error_obj['errors'] = dict(e)
+						return HttpResponseBadRequest(content_type="application/json", content=json.dumps(error_obj))
+					kyc.save()
+					
+					kyc.correspondance_addresses.all().delete()
+					kyc.related_persons.all().delete()
+					
+					for ca in form.correspondance_addresses.all():
+						correspondance_address = CorrespondanceAddress.active_objects.create(
+							use_poa_for_local_address=ca.use_poa_for_local_address,
+							address=ca.address,
+							city=ca.city,
+							district=ca.district,
+							indian_state=ca.indian_state,
+							zipcode=ca.zipcode,
+							country=ca.country,
+							user=kyc.user
+						)
+						kyc.correspondance_addresses.add(correspondance_address)
+					
+					for rp in form.related_persons.all():
+						related_person = RelatedPerson.active_objects.create(
+							kyc=rp.kyc,
+							related_person_type=rp.related_person_type,
+							first_name=rp.first_name,
+							last_name=rp.last_name,
+							middle_name=rp.middle_name,
+							prefix=rp.prefix,
+							poi_type=rp.poi_type,
+							poi_number=rp.poi_number,
+							passport_expiry_date=rp.passport_expiry_date,
+							dl_expiry_date=rp.dl_expiry_date,
+							poi_document=rp.poi_document,
+						
+						)
+						kyc.related_persons.add(related_person)
+					
+					kyc.application_forms.add(form)
+					
+					attestation = Attestation.active_objects.create(
+						employee=request.user.employee,
+						application_form=form,
+						remarks=remarks
+					)
+					
+					form.status = status
+					form.save()
+					
+					"""
+					NEED TO COPY ALL IMAGES & PDF ideally ?
+					"""
+					response_object['data'] = model_to_dict(form, fields=APPLICATION_FORM_DETAILED_SERIALIZER_FIELDS)
+					return JsonResponse(response_object)
 		except Exception as e:
 			return handling_exception_response(request, e)
